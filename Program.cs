@@ -72,7 +72,7 @@ namespace Nedklok_MasterClock_Nanoframework
                                 break;
                             case ClockState.waiting:
                                 _waitSeconds--;
-                                Debug.WriteLine($"wait for {_waitSeconds}");
+                                //Debug.WriteLine($"wait for {_waitSeconds}");
                                 if (_waitSeconds == 0)
                                 {
                                     _clockState = ClockState.Running;
@@ -81,7 +81,6 @@ namespace Nedklok_MasterClock_Nanoframework
                             default:
                                 break;
                         }                        
-
                         //Debug.WriteLine($"Second past {lastsecond}");
                         //Debug.WriteLine("system time is: " + DateTime.UtcNow);
                         if (_webSocketServer.ClientsCount > 0)
@@ -130,12 +129,10 @@ namespace Nedklok_MasterClock_Nanoframework
         private static void WsServer_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             //Debug.WriteLine($"ws data: {e.Frame.MessageType} - {e.Frame.Buffer}");
-
             var wsServer = (WebSocketServer)sender;
-
             if (e.Frame.MessageType == WebSocketMessageType.Text && e.Frame.MessageLength > 0)
             {
-                Debug.WriteLine($"Text messagetype - {Encoding.UTF8.GetString(e.Frame.Buffer, 0, e.Frame.MessageLength)}");
+                //Debug.WriteLine($"Text messagetype - {Encoding.UTF8.GetString(e.Frame.Buffer, 0, e.Frame.MessageLength)}");
 
                 string[] cmd = Encoding.UTF8.GetString(e.Frame.Buffer, 0, e.Frame.MessageLength).Split(' ');
                 if (cmd[0] == "startclock")
