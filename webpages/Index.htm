@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<script>
+    //setInterval(function () {
+    //    fetch("/time")
+    //        .then(function (response) {
+    //            return response.text();
+    //        })
+    //        .then(function (date) {
+    //            document.querySelector("#utcTime").innerHTML = date;
+    //        })
+    //        .catch(function (error) {
+    //            console.log("Error: " + error);
+    //        });
+    //}, 1000);
+
+    //webSocket = new WebSocket("/ws");
+    //webSocket.onmessage = function (msg) {
+    //    document.querySelector("#utcTime").innerHTML = msg.data;
+    //}
+
+
+    ///var count = 0;
+    //var lastSendRGB
+    //var lastRGB
+    //var sendNext = true;
+
+    let ws = new WebSocket("ws://192.168.0.101:8083/ws");
+    ws.binaryType = "arraybuffer";
+
+    ws.onopen = function (e) {
+        alert("[open] Connection established");
+        alert("Sending to server");
+        ws.send("My name is John");
+    };
+    ws.onmessage = function (event) {
+        console.log(event.data);
+    };
+    ws.onclose = function (event) {
+        if (event.wasClean) {
+            alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+            // e.g. server process killed or network down
+            // event.code is usually 1006 in this case
+            alert(`[close] Connection died, code=${event.code} reason=${event.reason}`);
+        }
+    };
+    ws.onerror = function (error) {
+        alert(`[error] ${error.message}`);
+    };
+
+
+</script>
+<html>
+<head>
+    <title>Nedklok Masterclock</title>
+</head>
+<body>
+    <h1>Nedklok Masterclock</h1>
+
+    <br />
+    <a href='/useinternal'>Generate an internal text.txt file</a>
+    <br />
+    <a href='/Text.txt'>Download the Text.txt file</a>
+    <br>
+    Try this url with parameters: <a href='/param.htm?param1=42&second=24&NAme=Ellerbach'>/param.htm?param1=42&second=24&NAme=Ellerbach</a>
+
+    <br />
+    <h1 id=utcTime>Waiting .....</h1>
+    <p>( Time in UTC)</p>
+    <br />
+
+
+    <form action="stopclock" method="post">
+        <button name="clock" value="stop">Stop Clock</button>
+    </form>
+
+    <form action="startclock" method="post">
+        <button name="clock" value="start">Start Clock</button>
+    </form>
+
+
+
+</body>
+</html>
