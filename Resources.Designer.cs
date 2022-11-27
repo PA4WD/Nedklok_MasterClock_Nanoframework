@@ -32,6 +32,7 @@ namespace Nedklok_MasterClock_Nanoframework
         [System.SerializableAttribute()]
         internal enum StringResources : short
         {
+            style = -5605,
             Index = 30232,
         }
     }

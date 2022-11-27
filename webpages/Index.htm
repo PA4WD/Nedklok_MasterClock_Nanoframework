@@ -1,27 +1,37 @@
 ﻿<!DOCTYPE html>
 <script>
+
+    const clockStates = ["Running", "Stopped", "Adding", "waiting"];
+
     //only edge browser works
-    let ws = new WebSocket("ws://192.168.0.103:80/ws");
+    let ws = new WebSocket("ws://192.168.188.22:80/ws");
     ws.binaryType = "arraybuffer";
 
     ws.onopen = function (e) {
         //ws.send("My name is John");
+        //alert("connection opened");
     };
     ws.onmessage = function (event) {
         //console.log(event.data);
-        document.querySelector("#utcTime").innerHTML = event.data;
+        const obj = JSON.parse(event.data);
+        var date = new Date(obj.CurrentTime);
+        //console.log(date.getDate());
+        //console.log(date.toUTCString());
+
+        document.querySelector("#utcTime").innerHTML = date.toUTCString();
+        document.querySelector("#clockState").innerHTML = clockStates[obj.CurrentState];
     };
     ws.onclose = function (event) {
         if (event.wasClean) {
-            alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+            //alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
         } else {
             // e.g. server process killed or network down
             // event.code is usually 1006 in this case
-            alert(`[close] Connection died, code=${event.code} reason=${event.reason}`);
+            //alert(`[close] Connection died, code=${event.code} reason=${event.reason}`);
         }
     };
     ws.onerror = function (error) {
-        alert(`[error] ${error.message}`);
+        //alert(`[error] ${error.message}`);
     };
 
     function startClock() {
@@ -42,36 +52,92 @@
     <meta charset="utf-8">
     <title>Nedklok Masterclock</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel=stylesheet href=style.css>
 </head>
+
 <body>
-    <h1>Nedklok Masterclock</h1>
+    <div id="site">
+        <div id="box" class="status boxSelect">
+            <div id="main">
 
-    <br />
-    <h1 id=utcTime>Waiting .....</h1>
-    <p>( Time in UTC)</p>
-    <br />
+                <h1>Nedklok Masterclock</h1>
 
-    <button onclick="startClock()">Start Clock</button>
-    <br />
-    <button onclick="stopClock()">Stop Clock</button>
-    <br />
-    <button onclick="addSeconds(1)">add Second</button>
-    <br />
-    <button onclick="addSeconds(60)">add Minute</button>
-    <br />
-    <button onclick="addSeconds(3600)">add Hour</button>
-    <br />
-    <button onclick="addSeconds(39600)">add 11 Hours</button>
+                <div id="clock">
+                    <div id=utcTime>Waiting .....</div>
+                </div>
+                <div id="clocktext">(Time in UTC)</div>
 
-    <br />
-    <button onclick="waitSeconds(1)">wait Second</button>
-    <br />
-    <button onclick="waitSeconds(60)">wait Minute</button>
-    <br />
-    <button onclick="waitSeconds(3600)">wait Hour</button>
-    <br />
-    <button onclick="waitSeconds(39600)">wait 11 Hours</button>
+                <div class="flex-h">
+                    <div class="s1">CLOCK STATUS</div>
+                </div>
+                <div class="statusField">
+                    <div id="clockState">Unknown</div>
+                </div>
 
+                <div class="flex-h">
+                    <div class="s1">CONTROL CLOCK</div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="startClock()">Start Clock</button>
+                    </div>
+                </div>
+                <div class="flex flex-l">
+                    <div class="bfield">
+                        <button onclick="stopClock()">Stop Clock</button>
+                    </div>
+                </div>
 
+                <div class="flex-h">
+                    <div class="s1">ADD TIME</div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="addSeconds(1)">Add Second</button>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="addSeconds(60)">Add Minute</button>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="addSeconds(3600)">Add Hour</button>
+                    </div>
+                </div>
+                <div class="flex flex-l">
+                    <div class="bfield">
+                        <button onclick="addSeconds(39600)">Add 11 Hours</button>
+                    </div>
+                </div>
+
+                <div class="flex-h">
+                    <div class="s1">WAIT TIME</div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="waitSeconds(1)">Wait Second</button>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="waitSeconds(60)">Wait Minute</button>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="bfield">
+                        <button onclick="waitSeconds(3600)">Wait Hour</button>
+                    </div>
+                </div>
+                <div class="flex flex-l">
+                    <div class="bfield">
+                        <button onclick="waitSeconds(39600)">Wait 11 Hours</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </body>
 </html>

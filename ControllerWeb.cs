@@ -8,15 +8,24 @@
 //{
 //    internal class ControllerWeb
 //    {
-//        //[Route("test"), Route("Test2"), Route("tEst42"), Route("TEST")]
-//        //[Route("/")]
-//        ////[CaseSensitive]
-//        //[Method("GET")]
-//        //public void RoutePostTest(WebServerEventArgs e)
-//        //{
-//        //    e.Context.Response.ContentType = "text/html";
-//        //    WebServer.OutPutStream(e.Context.Response, Resources.GetString(Resources.StringResources.Index));
-//        //}
+//        [Route("/")]
+//        //[CaseSensitive]
+//        [Method("GET")]
+//        public void Index(WebServerEventArgs e)
+//        {
+//            //e.Context.Response.ContentType = "text/html; charset=utf-8";
+//            //WebServer.OutPutStream(e.Context.Response, Resources.GetString(Resources.StringResources.Index));
+//            try
+//            {
+//                e.Context.Response.ContentType = "text/html; charset=utf-8";
+//                WebServer.OutPutStream(e.Context.Response, Resources.GetString(Resources.StringResources.Index));
+//            }
+//            catch (Exception ex)
+//            {
+//                Debug.WriteLine(ex.Message);
+//                WebServer.OutputHttpCode(e.Context.Response, HttpStatusCode.BadRequest);
+//            }
+//        }
 
 //        //[Route("favicon.ico")]
 //        //[Method("GET")]
@@ -27,10 +36,20 @@
 
 //        [Route("time")]
 //        [Method("GET")]
-//        public void RouteAnyTest(WebServerEventArgs e)
+//        public void GetTime(WebServerEventArgs e)
 //        {
-//            e.Context.Response.ContentType = "text/plain";
-//            WebServer.OutPutStream(e.Context.Response, DateTime.UtcNow.ToString());
+//            Debug.WriteLine("Get Time");
+//            try
+//            {
+//                e.Context.Response.ContentType = "text/plain";
+//                WebServer.OutPutStream(e.Context.Response, DateTime.UtcNow.ToString());
+//            }
+//            catch (Exception ex)
+//            {
+//                Debug.WriteLine(ex.Message);
+//                WebServer.OutputHttpCode(e.Context.Response, HttpStatusCode.BadRequest);
+//            }
+
 //        }
 
 //        //[Route("startclock")]
